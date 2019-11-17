@@ -9,6 +9,7 @@ using namespace std;
 void showMenu();
 void showElementaryMenu();
 int validate(int, int, bool);
+void getDimensions(int[]);
 void showLUDecompMenu();
 
 int main (){
@@ -52,41 +53,79 @@ void showMenu() {
 
 // Shows the Menu for elementary matrix operation
 void showElementaryMenu() {
-	int menuKey;
-	const int firstChoice = 1;
-	const int finalChoice = 3;
-
-	Matrix a;
-	Matrix b;
-
+	// Local vars
+	int menuKey;				// Key that controls menu selections
+	int dimensionsArr[2];		// Array for dimensions, 1st is rows, 2nd is cols
+	const int firstChoice = 1;	// Number of choices min
+	const int finalChoice = 4;  // Number of choices max
+	Matrix* mPtrOne = nullptr;	// Pointer for first matrix
+	Matrix* mPtrTwo = nullptr;  // Pointer for second matrix
 
 	// Menu options
 	cout << "Select from the following options" << endl;
 	cout << "1.) Matrix Addition" << endl;
 	cout << "2.) Matrix Subtraction" << endl;
 	cout << "3.) Matrix Multiplication" << endl;
+	cout << "4.) Matrix Transposition" << endl;
 
 	menuKey = validate(firstChoice, finalChoice, true);
 
 	// Switch menu
 	switch (menuKey) {
 	case 1:
-		// getMatrix();
-		cout << "Add" << endl;
+		// Get dimensions for and create matrix a
+		cout << "Matrix One: " << endl;
+		Matrix::getDimensions(dimensionsArr);
+		mPtrOne = new Matrix(dimensionsArr[0], dimensionsArr[1]);
+		
+		// Get dimension for and create matrix b
+		cout << "Matrix Two: " << endl;
+		Matrix::getDimensions(dimensionsArr);
+		mPtrTwo = new Matrix(dimensionsArr[0], dimensionsArr[1]);
+
+		cout << (*mPtrOne + *mPtrTwo) << endl;
 		break;
 	case 2:
+		// Get dimensions for and create matrix a
+		Matrix::getDimensions(dimensionsArr);
+		mPtrOne = new Matrix(dimensionsArr[0], dimensionsArr[1]);
+
+		// Get dimension for and create matrix b
+		Matrix::getDimensions(dimensionsArr);
+		mPtrTwo = new Matrix(dimensionsArr[0], dimensionsArr[1]);
+
+		cout << (*mPtrOne - *mPtrTwo) << endl;
 		cout << "Subtract" << endl;
 		break;
 	case 3:
-		cout << "Multiply" << endl;
-		break;
+		// Get dimensions for and create matrix a
+		Matrix::getDimensions(dimensionsArr);
+		mPtrOne = new Matrix(dimensionsArr[0], dimensionsArr[1]);
 
+		// Get dimension for and create matrix b
+		Matrix::getDimensions(dimensionsArr);
+		mPtrTwo = new Matrix(dimensionsArr[0], dimensionsArr[1]);
+
+		cout << (*mPtrOne * *mPtrTwo) << endl;
+		break;
+	case 4:
+		// Get dimensions for and create matrix a
+		cout << "Matrix: " << endl;
+		Matrix::getDimensions(dimensionsArr);
+		mPtrOne = new Matrix(dimensionsArr[0], dimensionsArr[1]);
+		cout << *mPtrOne;
+		cout << mPtrOne->transpose();
+		break;
 	}
+
+	// Deallocate memory
+	delete mPtrOne;
+	delete mPtrTwo;
 }
 
 // Shows the LU Decomp menu
 void showLUDecompMenu() {
-	cout << "LUDecompMenu";
+	cout << "LUDecompMenu" << endl;
 	return;
 }
 
@@ -133,14 +172,14 @@ int validate(int lowerBound, int upperBound, bool inclusive) {
 		// Range Check
 		if (inclusive) {
 			while (num > upperBound || num < lowerBound) {
-				cout << "Input out of bounds. Please enter a number (inclusive) between " << upperBound << " and " << lowerBound << endl;
+				cout << "Input out of bounds. Please enter a number (inclusive) between " << lowerBound << " and " << upperBound << endl;
 				cin >> num;
 			}
 			validInput = true;
 		}
 		else {
 			while (num >= upperBound || num <= lowerBound) {
-				cout << "Input out of bounds. Please enter a number (inclusive) between " << upperBound << " and " << lowerBound << endl;
+				cout << "Input out of bounds. Please enter a number (inclusive) between " << lowerBound << " and " << upperBound << endl;
 				cin >> num;
 			}
 			validInput = true;
