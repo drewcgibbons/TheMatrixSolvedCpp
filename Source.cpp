@@ -16,6 +16,7 @@ int main (){
 	return 0;
 }
 
+// Shows the Main Menu
 void showMenu() {
 	int switchKey;
 	const int firstChoice = 1;
@@ -49,11 +50,15 @@ void showMenu() {
 
 }
 
-
+// Shows the Menu for elementary matrix operation
 void showElementaryMenu() {
 	int menuKey;
 	const int firstChoice = 1;
 	const int finalChoice = 3;
+
+	Matrix a;
+	Matrix b;
+
 
 	// Menu options
 	cout << "Select from the following options" << endl;
@@ -66,6 +71,7 @@ void showElementaryMenu() {
 	// Switch menu
 	switch (menuKey) {
 	case 1:
+		// getMatrix();
 		cout << "Add" << endl;
 		break;
 	case 2:
@@ -78,15 +84,18 @@ void showElementaryMenu() {
 	}
 }
 
+// Shows the LU Decomp menu
 void showLUDecompMenu() {
 	cout << "LUDecompMenu";
 	return;
 }
 
+// Validates integer based input between an upper and lower bound
 int validate(int lowerBound, int upperBound, bool inclusive) {
 	string numString;
 	int num;
 	bool validInput = false;
+	bool isInteger = false;
 
 
 	while (!validInput) {
@@ -94,10 +103,26 @@ int validate(int lowerBound, int upperBound, bool inclusive) {
 		cin >> numString;
 		int stringLength = numString.length();
 		
+		// Validate all digit input
+		for (int i = 0; i < stringLength; i++) {
+			if (!isdigit(numString[i])) {
+				isInteger = false;
+				break;
+			}
+			isInteger = true;
+		}
+
 		// Validate Integer
-		while (!(isdigit(numString[0])) && (stringLength != 1)) {
+		while (!isInteger) {
 			cout << "Please enter an integer" << endl;
 			cin >> numString;
+
+			for (int i = 0; i < stringLength; i++) {
+				if (!isdigit(numString[i])) {
+					break;
+				}
+				isInteger = true;
+			}
 		}
 		
 		// Convert String to int
