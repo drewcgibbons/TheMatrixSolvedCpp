@@ -9,8 +9,6 @@ using namespace std;
 void showMenu();
 void showElementaryMenu();
 int validate(int, int, bool);
-void getDimensions(int[]);
-void showLUDecompMenu();
 
 int main (){
 	showMenu();
@@ -19,17 +17,28 @@ int main (){
 
 // Shows the Main Menu
 void showMenu() {
+	// Local vars
 	int switchKey;
+
+	// For num choices
 	const int firstChoice = 1;
-	const int finalChoice = 3;
+	const int finalChoice = 5;
+
+	// Holds matrix
+	Matrix* mPtrOne = nullptr;
+
+	// Holds matrix dimensions
+	int dimensionsArr[2];
 
 	
 	do {
 		// Menu Options
 		cout << "Select from the following options" << endl;
 		cout << "1.) Elementary Matrix Operations" << endl;
-		cout << "2.) LU Decomposition" << endl;
-		cout << "3.) Exit" << endl;
+		cout << "2.) Upper Triangular" << endl;
+		cout << "3.) LU Decomposition" << endl;
+		cout << "4.) Solve AX=b" << endl;
+		cout << "5.) Exit" << endl;
 
 		// Validate Switch Key
 		switchKey = validate(firstChoice, finalChoice, true);
@@ -40,14 +49,33 @@ void showMenu() {
 			showElementaryMenu();
 			break;
 		case 2:
-			showLUDecompMenu();
-			cout << "2";
+			 // Upper Trinagular only
+			// Get dimensions for and create matrix
+				cout << "Matrix One: " << endl;
+				Matrix::getDimensions(dimensionsArr);
+				mPtrOne = new Matrix(dimensionsArr[0], dimensionsArr[1]);
+			cout << mPtrOne->getUpperTriangular();
 			break;
 		case 3:
-			cout << "3";
+			// Lower and upper
+			cout << "Matrix One: " << endl;
+			Matrix::getDimensions(dimensionsArr);
+			mPtrOne = new Matrix(dimensionsArr[0], dimensionsArr[1]);
+			cout << mPtrOne->getLowerTriangular();
+			cout << mPtrOne->getUpperTriangular();
+			break;
+		case 4:
+			cout << "Enter A: " << endl;
+			Matrix::getDimensions(dimensionsArr);
+			mPtrOne = new Matrix(dimensionsArr[0], dimensionsArr[1]);
+			cout << mPtrOne->addB();
+		case 5:
 			break;
 		}
-	} while (switchKey != 3);
+	} while (switchKey != finalChoice);
+
+	cout << endl << endl;
+	cout << "Exiting" << endl;
 
 }
 
@@ -57,7 +85,7 @@ void showElementaryMenu() {
 	int menuKey;				// Key that controls menu selections
 	int dimensionsArr[2];		// Array for dimensions, 1st is rows, 2nd is cols
 	const int firstChoice = 1;	// Number of choices min
-	const int finalChoice = 4;  // Number of choices max
+	const int finalChoice = 5;  // Number of choices max
 	Matrix* mPtrOne = nullptr;	// Pointer for first matrix
 	Matrix* mPtrTwo = nullptr;  // Pointer for second matrix
 
@@ -67,6 +95,8 @@ void showElementaryMenu() {
 	cout << "2.) Matrix Subtraction" << endl;
 	cout << "3.) Matrix Multiplication" << endl;
 	cout << "4.) Matrix Transposition" << endl;
+	cout << "5.) Matrix Determinant" << endl;
+	cout << "6.) Return to Main Menu" << endl;
 
 	menuKey = validate(firstChoice, finalChoice, true);
 
@@ -77,7 +107,7 @@ void showElementaryMenu() {
 		cout << "Matrix One: " << endl;
 		Matrix::getDimensions(dimensionsArr);
 		mPtrOne = new Matrix(dimensionsArr[0], dimensionsArr[1]);
-		
+
 		// Get dimension for and create matrix b
 		cout << "Matrix Two: " << endl;
 		Matrix::getDimensions(dimensionsArr);
@@ -113,20 +143,30 @@ void showElementaryMenu() {
 		cout << "Matrix: " << endl;
 		Matrix::getDimensions(dimensionsArr);
 		mPtrOne = new Matrix(dimensionsArr[0], dimensionsArr[1]);
-		cout << *mPtrOne;
+
 		cout << mPtrOne->transpose();
 		break;
+	case 5:
+		Matrix::getDimensions(dimensionsArr);
+		mPtrOne = new Matrix(dimensionsArr[0], dimensionsArr[1]);
+		
+		// Check dimensions
+		if (dimensionsArr[0] == dimensionsArr[1]) {
+		cout << "Deterimant is: " << mPtrOne->getDeterminant();
+		} else {
+			cout << "There is no determinant" << endl;
+		}
+		break;
+	case 6:
+		break;
 	}
+	
+
+	cout << endl << endl;
 
 	// Deallocate memory
 	delete mPtrOne;
 	delete mPtrTwo;
-}
-
-// Shows the LU Decomp menu
-void showLUDecompMenu() {
-	cout << "LUDecompMenu" << endl;
-	return;
 }
 
 // Validates integer based input between an upper and lower bound
